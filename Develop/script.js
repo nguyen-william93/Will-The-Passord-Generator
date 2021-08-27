@@ -1,9 +1,10 @@
 // Assignment code here
 
 //global variable declaration and object to store user choice
-var lowerCase = "";
-var upperCase = "";
-var specialCharacter = "";
+var lowerCase = "abcdefghijklmnopqrstuvwxyz";
+var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var specialCharacter = "~!@#$%^&*()-=+;:,./<>?[]|`";
+var numeric = "0123456789"
 
 userChoice = {
   maxLength: 8,
@@ -28,8 +29,10 @@ var randomNumberPassword = function (length){
 // userChoice.count is used to check wheter or not the user specified at least one type of password
 var getLength = function(){
   var value = prompt("How long is your password? Enter a value between 8 and 128");
-  while (value <= 8 || value > 128){
+
+  while (value < 8 || value > 128 || isNaN(parseInt(value)) === true){
     value = prompt("Not an acceptable value. PLease enter a value between 8 and 128");
+    isNaN(parseInt(value));
   }
   return value;
 };
@@ -61,12 +64,22 @@ var getSpecial = function(){
   }
 };
 
+var getNumeric = function(){
+  var value = confirm("Would you like to include numeric number?")
+  if (value === false){
+    userChoice.count = userChoice.count + 1;
+  } else {
+    userChoice.passwordBank = userChoice.passwordBank.concat(numeric)
+  }
+}
+
 //update the userChoice object 
 var updateUserChoice = function(){
   userChoice.maxLength = parseInt(getLength());
   getLowerCase();
   getUpperCase();
   getSpecial();
+  getNumeric();
 };
 
 // generate password with concat()
@@ -74,7 +87,7 @@ var generatePassword = function(){
   userChoice.reset();
   updateUserChoice();
 
-  if (userChoice.count < 3){ //checking to see if user specified at least 1 type of password
+  if (userChoice.count < 4){ //checking to see if user specified at least 1 type of password
     for (var i = 0; i < userChoice.maxLength; i++){
       var index = randomNumberPassword(userChoice.passwordBank.length);
       userChoice.generatePassword = userChoice.generatePassword.concat(userChoice.passwordBank[index]);
