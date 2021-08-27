@@ -4,7 +4,7 @@
 var lowerCase = "abcdefghijklmnopqrstuvwxyz";
 var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var specialCharacter = "~!@#$%^&*()-=+;:,./<>?[]|`";
-var numeric = "0123456789"
+var numeric = "0123456789";
 
 userChoice = {
   maxLength: 8,
@@ -20,12 +20,13 @@ userChoice = {
 };
 
 //randomNumber function to create a random number base on the length of the password bank
+//no need for the random formular because of 0 indexing, so the range is from 0 to length of passwordBank - 1 = math.floor(math.random() * length of passwordBank)
 var randomNumberPassword = function (length){
   var value = Math.floor(Math.random()* length);
   return value;
 };
 
-// obtain the user choice through a series of prompt and update the password bank.
+// function to prompt the user choice of criteria and update the passwordBank, counter
 // userChoice.count is used to check wheter or not the user specified at least one type of password
 var getLength = function(){
   var value = prompt("How long is your password? Enter a value between 8 and 128");
@@ -74,8 +75,8 @@ var getNumeric = function(){
 }
 
 //update the userChoice object 
-var updateUserChoice = function(){
-  userChoice.maxLength = parseInt(getLength());
+var getUserChoice = function(){
+  userChoice.maxLength = getLength();
   getLowerCase();
   getUpperCase();
   getSpecial();
@@ -85,7 +86,7 @@ var updateUserChoice = function(){
 // generate password with concat()
 var generatePassword = function(){
   userChoice.reset();
-  updateUserChoice();
+  getUserChoice();
 
   if (userChoice.count < 4){ //checking to see if user specified at least 1 type of password
     for (var i = 0; i < userChoice.maxLength; i++){
