@@ -1,17 +1,23 @@
 // Assignment code here
 
 //global variable declaration and object to store user choice
-var lowerCase = "abcdefghijklmnopqrstuvwxyz";
-var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var specialCharacter = "!@#$%|&*()-=+~<>,.?/;:{}[]"
-var criteriaCounter = 0;
+
+library = [
+  {
+    lowerCase: "abcdefghijklmnopqrstuvwxyz",
+  },
+  {
+    upperCase: "ABCDEFGHIJKLMNOPQRSTUVWXY",
+  },
+  {
+    specialCharacter: "!@#$%|&*()-=+~<>,.?/;:{}[]" ,
+  }
+];
 userChoice = {
   maxLength: 8,
-  lowerCase: false,
-  upperCase: false,
-  specialCharacter: false,
   generatePassword: "",
   count: 0,
+  passwordBank: "",
   reset: function(){
     this.lowerCase= false,
     this.upperCase= false,
@@ -23,14 +29,10 @@ userChoice = {
 };
 
 //randomNumber function to create a random number
-var randomNumberPassword = function (){
-  var value = Math.floor(Math.random()* (27));
+var randomNumberPassword = function (passwordBank){
+  var value = Math.floor(Math.random()* ((passwordBank.lenght)+1));
   return value;
 };
-
-var randomNumberCriteria = function(){
-  var value = Math.floor(Math.random() * 4);
-}
 
 // obtain the user choice through a series of prompt
 var getLength = function(){
@@ -45,6 +47,8 @@ var getLowerCase = function(){
   var value = confirm("Would you like include lower case?");
   if (value === false){
     userChoice.count = userChoice.count + 1;
+  } else {
+    userChoice.passwordBank = userChoice.passwordBank.concat(library[0].lowerCase);
   }
   return value;
 };
@@ -53,6 +57,8 @@ var getUpperCase = function(){
   var value = confirm("Would you like include upper case?");
   if (value === false){
     userChoice.count = userChoice.count + 1;
+  } else {
+    userChoice.passwordBank = userChoice.passwordBank.concat(library[1].upperCase);
   }
   return value;
 };
@@ -61,16 +67,21 @@ var getSpecial = function(){
   var value = confirm("Would you like to include special character?");
   if (value === false){
     userChoice.count = userChoice.count + 1;
+  }else{
+    userChoice.passwordBank = userChoice.passwordBank.concat(library[2].specialCharacter);
   }
   return value;
 };
 
+//update the userChoice object 
 var updateUserChoice = function(){
   userChoice.maxLength = parseInt(getLength());
-  userChoice.lowerCase = getLowerCase();
-  userChoice.upperCase = getUpperCase();
-  userChoice.specialCharacter = getSpecial();
+  getLowerCase();
+  getUpperCase();
+  getSpecial();
 };
+
+// generate password with concat()
 
 var generatePassword = function(){
   userChoice.reset();
@@ -79,6 +90,7 @@ var generatePassword = function(){
   if (userChoice.count < 3){
     for (var i = 0; i < userChoice.maxLength; i++){
       console.log("it's working");
+      console.log(userChoice.passwordBank);
     }
   } else {
     alert("You have to choose at least 1 criteria. Please try again.");
