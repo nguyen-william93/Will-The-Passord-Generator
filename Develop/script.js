@@ -1,40 +1,31 @@
 // Assignment code here
 
 //global variable declaration and object to store user choice
+var lowerCase = "";
+var upperCase = "";
+var specialCharacter = "";
 
-library = [
-  {
-    lowerCase: "abcdefghijklmnopqrstuvwxyz",
-  },
-  {
-    upperCase: "ABCDEFGHIJKLMNOPQRSTUVWXY",
-  },
-  {
-    specialCharacter: "!@#$%|&*()-=+~<>,.?/;:{}[]" ,
-  }
-];
 userChoice = {
   maxLength: 8,
   generatePassword: "",
   count: 0,
   passwordBank: "",
   reset: function(){
-    this.lowerCase= false,
-    this.upperCase= false,
-    this.specialCharacter= false,
     this.maxLength = 8,
     this.generatePassword = "",
-    this.count = 0
+    this.count = 0,
+    this.passwordBank = ""
   }
 };
 
-//randomNumber function to create a random number
-var randomNumberPassword = function (passwordBank){
-  var value = Math.floor(Math.random()* ((passwordBank.lenght)+1));
+//randomNumber function to create a random number base on the length of the password bank
+var randomNumberPassword = function (length){
+  var value = Math.floor(Math.random()* length);
   return value;
 };
 
-// obtain the user choice through a series of prompt
+// obtain the user choice through a series of prompt and update the password bank.
+// userChoice.count is used to check wheter or not the user specified at least one type of password
 var getLength = function(){
   var value = prompt("How long is your password? Enter a value between 8 and 128");
   while (value <= 8 || value > 128){
@@ -48,9 +39,8 @@ var getLowerCase = function(){
   if (value === false){
     userChoice.count = userChoice.count + 1;
   } else {
-    userChoice.passwordBank = userChoice.passwordBank.concat(library[0].lowerCase);
+    userChoice.passwordBank = userChoice.passwordBank.concat(lowerCase);
   }
-  return value;
 };
 
 var getUpperCase = function(){
@@ -58,9 +48,8 @@ var getUpperCase = function(){
   if (value === false){
     userChoice.count = userChoice.count + 1;
   } else {
-    userChoice.passwordBank = userChoice.passwordBank.concat(library[1].upperCase);
+    userChoice.passwordBank = userChoice.passwordBank.concat(upperCase);
   }
-  return value;
 };
 
 var getSpecial = function(){
@@ -68,9 +57,8 @@ var getSpecial = function(){
   if (value === false){
     userChoice.count = userChoice.count + 1;
   }else{
-    userChoice.passwordBank = userChoice.passwordBank.concat(library[2].specialCharacter);
+    userChoice.passwordBank = userChoice.passwordBank.concat(specialCharacter);
   }
-  return value;
 };
 
 //update the userChoice object 
@@ -82,20 +70,20 @@ var updateUserChoice = function(){
 };
 
 // generate password with concat()
-
 var generatePassword = function(){
   userChoice.reset();
   updateUserChoice();
-  console.log(userChoice.count)
-  if (userChoice.count < 3){
+
+  if (userChoice.count < 3){ //checking to see if user specified at least 1 type of password
     for (var i = 0; i < userChoice.maxLength; i++){
-      console.log("it's working");
-      console.log(userChoice.passwordBank);
+      var index = randomNumberPassword(userChoice.passwordBank.length);
+      userChoice.generatePassword = userChoice.generatePassword.concat(userChoice.passwordBank[index]);
     }
   } else {
     alert("You have to choose at least 1 criteria. Please try again.");
     generatePassword();
   }
+
   return userChoice.generatePassword;
 };
 
