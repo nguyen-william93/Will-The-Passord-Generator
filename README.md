@@ -13,6 +13,6 @@ The other input that needed checking was the speficiation. The user need to spec
 
 The user then can refresh the page, the code will reset the length, the password bank, the counter, and the generated password for another generated password.
 
-link:
+link: https://nguyen-william93.github.io/Will-The-Passord-Generator/
 screenshot: ./Finish-Product.png
 
